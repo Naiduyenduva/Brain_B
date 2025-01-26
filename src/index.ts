@@ -3,9 +3,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 import mongoose from "mongoose"
 import jwt from "jsonwebtoken"
-import { contentModel, linkModel, UserMOdel } from "./db";
+import { contentModel, linkModel, UserModel } from "./db";
 import { userMiddleware } from "./middleware";
 import { random } from "./utils";
+import cors from "cors";
 
 const JWT_password = process.env.JWT_Password as string
 
@@ -15,23 +16,25 @@ console.log(JWT_password)
 
 const app = express();
 app.use(express.json())
+app.use(cors())
 
 app.post("/api/v1/signup", async(req,res)=> {
     const username = req.body.username;
     const password = req.body.password;
-
+    console.log(username)
+    console.log(password)
     try {
-        await UserMOdel.create({
+        await UserModel.create({
             username: username,
             password: password
         })
         res.json({
             message: "signup successfull"
         })
-        
+
     } catch (error) {
-        res.status(411).json({
-            messsage: "user already exists"
+        res.status(400).json({
+            message: "user already exists"
         })
     }
 })
@@ -39,7 +42,7 @@ app.post("/api/v1/signin", async (req,res)=> {
     const username = req.body.username;
     const password = req.body.password
 
-    const existingUser = await UserMOdel.findOne({
+    const existingUser = await UserModel.findOne({
         username,
         password
     })
@@ -133,7 +136,7 @@ app.get("/api/v1/brain/:shareLink", async (req,res)=> {
     const content = await contentModel.findOne({
         userId: link.userId
     })
-    const user = await UserMOdel.findOne({
+    const user = await UserModel.findOne({
         _id: link.userId
     })
     if(!user) {

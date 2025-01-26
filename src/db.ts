@@ -4,9 +4,9 @@ const userSchema = new Schema({
     username: {type:String, required:true, unique: true},
     password: {type:String, required: true}
 })
-export const UserMOdel = mongoose.model("user",userSchema)
+export const UserModel = mongoose.model("user",userSchema)
 
-const contentTypes = ['image', 'video', 'article', 'audio']; // Extend as needed
+const contentTypes = ['twitter', 'youtube', 'document', 'link']; // Extend as needed
 
 
 const contentSchema = new Schema ({
