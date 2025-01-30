@@ -1,6 +1,5 @@
 import { NextFunction,Response,Request } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken";
-// const JWT_Password = "damnnmad"
 const JWT_password = process.env.JWT_Password as string
 
 
